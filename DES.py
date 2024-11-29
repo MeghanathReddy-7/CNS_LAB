@@ -1,6 +1,6 @@
 #pip install pycryptodome
 import base64;
-from Crypto.Cipher import DES
+from Crypto.Cipher import DES,DES3,Blowfish,AES
 from Crypto.Util.Padding import pad,unpad
 from Crypto.Random import get_random_bytes
 
@@ -18,6 +18,7 @@ def decrypt(cipher_text,key):
     return unpad_the_text.decode()
 plaintext=input("Enter the text:")
 key=get_random_bytes(8)
+#Key is 16 bytes for AES,24 for DES3,4<=Blowfish<=56
 ciphet_text=encrypt(plaintext,key)
 print("Cipher text:",ciphet_text)
 print(decrypt(ciphet_text,key))
