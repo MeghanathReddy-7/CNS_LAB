@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffie-Hellman Key Exchange</title>
+</head>
+<body>
+    <h2>Diffie-Hellman Key Exchange</h2>
+    <label for="prime">Enter a prime number (p):</label>
+    <input type="number" id="prime" placeholder="e.g., 7" required>
+    <br>
+    <label for="primitiveRoot">Enter a primitive root (a):</label>
+    <input type="number" id="primitiveRoot" placeholder="e.g., 3" required>
+    <br>
+    <label for="privateKeyA">Enter Alice's private key (x<sub>a</sub>):</label>
+    <input type="number" id="privateKeyA" placeholder="e.g., 5" required>
+    <br>
+    <label for="privateKeyB">Enter Bob's private key (x<sub>b</sub>):</label>
+    <input type="number" id="privateKeyB" placeholder="e.g., 6" required>
+    <br>
+    <button onclick="diffieHellman()">Calculate Shared Key</button>
+    <div id="output"></div>
+    <script>
+        function diffieHellman() {
+            function power(a,b,p){ 
+                if(b==1){ 
+                return a; 
+            } 
+            else{ 
+                return((Math.pow(a,b))%p); 
+                } 
+            } 
+            const p = parseInt(document.getElementById("prime").value);
+            const a = parseInt(document.getElementById("primitiveRoot").value);
+            const xA = parseInt(document.getElementById("privateKeyA").value);
+            const xB = parseInt(document.getElementById("privateKeyB").value);
+            // Calculate public keys
+            const yA = power(a, xA, p); // yA = a^xA mod p
+            const yB = power(a, xB, p); // yB = a^xB mod p
+            // Calculate shared keys
+            const kA = power(yB, xA, p); // kA = yB^xA mod p
+            const kB = power(yA, xB, p); // kB = yA^xB mod p
+            // Display the results
+            document.getElementById("output").innerHTML = `
+                <p>Alice's public key (y<sub>A</sub>): ${yA}</p>
+                <p>Bob's public key (y<sub>B</sub>): ${yB}</p>
+                <p>Shared key calculated by Alice (k<sub>A</sub>): ${kA}</p>
+                <p>Shared key calculated by Bob (k<sub>B</sub>): ${kB}</p>
+                <p style="color: ${kA === kB ? 'green' : 'red'}">
+                    ${kA === kB ? 'Success! Shared keys match.' : 'Error! Shared keys do not match.'}
+                </p>
+            `;
+        }
+    </script>
+</body>
+</html>
